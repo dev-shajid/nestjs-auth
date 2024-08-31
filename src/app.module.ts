@@ -1,0 +1,18 @@
+import { Module } from '@nestjs/common';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { TypeOrmModule } from './datasource/typeorm.module';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    TypeOrmModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      expandVariables: true,
+    }),
+    AuthModule,
+    UserModule,
+  ],
+})
+export class AppModule { }
