@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from 'src/user/dto/login-user.dto';
 import { Public } from './decorators/public.decorator';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -15,6 +16,14 @@ export class AuthController {
   async login(@Request() req) {
     console.log(req.user);
     return req.user;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RefreshAuthGuard)
+  @Public()
+  @Post('refresh')
+  async refreshToken(@Request() req) {
+    return this.authService.refreshToken(req.user.id)
   }
   
   @Post('logout')

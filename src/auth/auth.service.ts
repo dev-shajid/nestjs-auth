@@ -36,8 +36,7 @@ export class AuthService {
     async refreshToken(userId: number) {
       const {accessToken, refreshToken} = await this.generateToken({sub: userId});
       const hashedRefreshToken = await argon2.hash(refreshToken);
-  
-      console.log({userId, hashedRefreshToken});
+      
       await this.userService.updateRefreshToken(userId, hashedRefreshToken);
       
       return ApiResponse(200, 'Refresh token successful', { accessToken, refreshToken });
@@ -53,8 +52,9 @@ export class AuthService {
 
 
     async validateRefreshToken(userId: number, refreshToken: string) {
+      
       const user = await this.userService.findOne(userId);
-      console.log({user});
+      
       if (!user) throw new NotFoundException('User is not found!');
       if (!user.refreshToken) throw new NotFoundException('Invalid Refresh Token!');
       const isRefreshTokenMatch = await argon2.verify(user.refreshToken, refreshToken);

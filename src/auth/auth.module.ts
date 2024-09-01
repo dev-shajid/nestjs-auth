@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
@@ -23,8 +22,8 @@ import { LocalStrategy } from './strategies/local.strategy';
   ],
   controllers: [AuthController],
   providers: [
-    LocalStrategy,
     AuthService,
+    LocalStrategy,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
